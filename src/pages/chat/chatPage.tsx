@@ -1,7 +1,7 @@
+import { useChat } from "@/hooks/useChat";
 import { useSession } from "@/hooks/useSession";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
-
 
 export const ChatPage = () => {
   const sessionData = useSession();
@@ -9,11 +9,14 @@ export const ChatPage = () => {
   
   useEffect(() => {
     if (sessionData === null) {
+      console.log('navving')
       navigate('/');
     }
   }, [sessionData]);
   
-  const { name, roomKey, sessionToken } = sessionData!;
+  const { name, roomKey, sessionToken } = sessionData || {};
+
+  // const {  } = useChat(roomKey, sessionToken);
   
   return (
     <div className="lg:p-8">

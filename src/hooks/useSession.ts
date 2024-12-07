@@ -1,4 +1,4 @@
-import { SessionContext } from "@/contexts/session";
+import { SessionContext } from "@/contexts/sessionContext";
 import { useContext } from "react";
 import { isNil, none } from 'ramda';
 
@@ -8,6 +8,8 @@ export const useSession = () => {
   if (context === null) {
     throw new Error('can only use useSession from inside the SessionProvider');
   }
+
+  console.log(context);
 
   if (none(isNil, [
     context.name,
@@ -20,6 +22,5 @@ export const useSession = () => {
       sessionToken: context.sessionToken!,
     }
   }
-
   return null;
 };

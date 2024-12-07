@@ -8,8 +8,14 @@ interface SessionState {
   sessionToken?: string;
 }
 
+export const INITIAL_SESSION: SessionState = {
+  name: undefined,
+  roomKey: undefined,
+  sessionToken: undefined,
+}
+
 interface SessionDispatch {
-  storeSession: (session: SessionState) => void;
+  storeSession: (session?: SessionState) => void;
 }
 
 type SessionContextType = (SessionDispatch & SessionState);
@@ -21,7 +27,7 @@ interface SessionProviderProps {
 }
 
 export const SessionProvider = ({ children }: SessionProviderProps) => {
-  const [session, setSession] = useState<SessionState | null>(null);
+  const [session, setSession] = useState<SessionState>(INITIAL_SESSION);
 
   useEffect(() => {
     const localData = localStorage.getItem(LOCAL_SESSION_DATA_KEY);
@@ -35,8 +41,12 @@ export const SessionProvider = ({ children }: SessionProviderProps) => {
     <SessionContext.Provider value={{
       ...session,
       storeSession: (session) => {
-        localStorage.setItem(LOCAL_SESSION_DATA_KEY, JSON.stringify(session));
-        setSession(session);
+        setSession(session || INITIAL_SESSION);
+        if (session) {
+          localStorage.setItem(LOCAL_SESSION_DATA_KEY, JSON.stringify(session));
+        } else {
+          localStorage.removeItem(LOCAL_SESSION_DATA_KEY);
+        }
       }
     }}>
       {children}

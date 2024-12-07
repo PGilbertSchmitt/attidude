@@ -1,4 +1,4 @@
-import { SessionContext } from "@/contexts/session";
+import { SessionContext } from "@/contexts/sessionContext";
 import { useContext } from "react";
 
 export const useSetSession = () => {
